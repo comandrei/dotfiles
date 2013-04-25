@@ -25,8 +25,8 @@
              '("\\.py\\'" flymake-pyflakes-init)))
 (load-library "flymake-cursor")
 
-(add-hook 'python-mode-hook 
-      (lambda () 
+(add-hook 'python-mode-hook
+      (lambda ()
         (unless (eq buffer-file-name nil) (flymake-mode))
         (local-set-key [f2] 'flymake-goto-prev-error)
         (local-set-key [f3] 'flymake-goto-next-error)
@@ -46,3 +46,11 @@
       (setq buffer (car list))))
   (message "Refreshed open files"))
 (global-set-key [(control shift f5)] 'revert-all-buffers)
+
+(defun kill-other-buffers ()
+  "Kill all buffers but the current one.
+Don't mess with special buffers."
+  (interactive)
+  (dolist (buffer (buffer-list))
+    (unless (or (eql buffer (current-buffer)) (not (buffer-file-name buffer)))
+      (kill-buffer buffer))))
