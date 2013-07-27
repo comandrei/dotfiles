@@ -1,3 +1,4 @@
+(setq auto-mode-alist (cons '("emacs" . lisp-mode) auto-mode-alist))
 (ido-mode 1)
 (show-paren-mode 1)
 (tool-bar-mode -1)
@@ -5,14 +6,35 @@
 (scroll-bar-mode -1)
 (column-number-mode 1)
 
-(require 'yasnippet) ;; not yasnippet-bundle
+;; Prerequisite: Emacs >= 24
+(require 'package)
+(package-initialize)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives
+	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
+
+
+(defun install-if-needed (package)
+  (unless (package-installed-p package)
+    (package-refresh-contents)
+    (package-install package)))
+
+;; make more packages available with the package installer
+(setq to-install
+      '(magit yasnippet jedi auto-complete autopair find-file-in-repository column-marker))
+
+(mapc 'install-if-needed to-install)
+(require 'yasnippet)
+(require 'zenburn-theme)
+(require 'flymake)
+(require 'flymake-cursor)
+(require 'yasnippet)
+(require 'column-marker)
 
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/snippets/")
-(add-to-list 'load-path "~/.emacs.d/site-packages")
 
-(require 'zenburn-theme)
-(require 'flymake)
 (when (load "flymake" t)
   (defun flymake-pyflakes-init ()
     (let* ((temp-file (flymake-init-create-temp-buffer-copy
