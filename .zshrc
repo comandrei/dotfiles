@@ -34,6 +34,7 @@ ZSH_THEME="robbyrussell"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git virtualenvwrapper django pip)
 
+export PIP_DOWNLOAD_CACHE=$HOME/.pip-cache/
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
