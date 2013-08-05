@@ -22,7 +22,7 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(magit yasnippet jedi auto-complete autopair find-file-in-repository column-marker))
+      '(zenburn-theme flymake flymake-cursor magit yasnippet jedi auto-complete autopair find-file-in-repository column-marker))
 
 (mapc 'install-if-needed to-install)
 (require 'yasnippet)
