@@ -22,15 +22,13 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(zenburn-theme flymake flymake-cursor magit yasnippet jedi auto-complete autopair find-file-in-repository column-marker))
+      '(zenburn-theme flymake flymake-cursor magit yasnippet))
 
 (mapc 'install-if-needed to-install)
 (require 'yasnippet)
 (require 'zenburn-theme)
 (require 'flymake)
 (require 'flymake-cursor)
-(require 'yasnippet)
-(require 'column-marker)
 
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/snippets/")
