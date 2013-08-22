@@ -22,7 +22,7 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(zenburn-theme flymake flymake-cursor magit yasnippet))
+      '(zenburn-theme flymake flymake-cursor magit yasnippet less-css-mode markdown-mode))
 
 (mapc 'install-if-needed to-install)
 (require 'yasnippet)
