@@ -5,6 +5,7 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (column-number-mode 1)
+(setq-default show-trailing-whitespace t)
 
 ;; Prerequisite: Emacs >= 24
 (require 'package)
@@ -22,11 +23,12 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(zenburn-theme flymake flymake-cursor magit yasnippet less-css-mode markdown-mode))
+      '(flymake flymake-cursor magit yasnippet less-css-mode markdown-mode web-mode))
+
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 (mapc 'install-if-needed to-install)
 (require 'yasnippet)
-(require 'zenburn-theme)
 (require 'flymake)
 (require 'flymake-cursor)
 
