@@ -23,7 +23,7 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(flymake flymake-cursor magit yasnippet less-css-mode markdown-mode web-mode))
+      '(flymake flymake-cursor magit yasnippet less-css-mode markdown-mode web-mode zenburn-theme))
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
@@ -31,7 +31,7 @@
 (require 'yasnippet)
 (require 'flymake)
 (require 'flymake-cursor)
-
+(load-theme 'zenburn t)
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/snippets/")
 
