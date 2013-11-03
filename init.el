@@ -6,7 +6,6 @@
 (scroll-bar-mode -1)
 (column-number-mode 1)
 (setq-default show-trailing-whitespace t)
-
 ;; Prerequisite: Emacs >= 24
 (require 'package)
 (package-initialize)
@@ -23,7 +22,7 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(flymake flymake-cursor magit yasnippet less-css-mode markdown-mode web-mode zenburn-theme jedi))
+      '(flymake flymake-cursor magit yasnippet less-css-mode markdown-mode web-mode zenburn-theme jedi smartparens))
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
@@ -31,6 +30,8 @@
 (require 'yasnippet)
 (require 'flymake)
 (require 'flymake-cursor)
+(require 'smartparens)
+(show-smartparens-global-mode +1)
 (load-theme 'zenburn t)
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/snippets/")
