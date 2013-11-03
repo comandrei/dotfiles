@@ -23,7 +23,7 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(flymake flymake-cursor magit yasnippet less-css-mode markdown-mode web-mode zenburn-theme))
+      '(flymake flymake-cursor magit yasnippet less-css-mode markdown-mode web-mode zenburn-theme jedi))
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
@@ -34,6 +34,10 @@
 (load-theme 'zenburn t)
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/snippets/")
+
+(require 'magit)
+(global-set-key "\C-xg" 'magit-status)
+
 
 (when (load "flymake" t)
   (defun flymake-pyflakes-init ()
@@ -53,6 +57,15 @@
         (local-set-key [f2] 'flymake-goto-prev-error)
         (local-set-key [f3] 'flymake-goto-next-error)
         ))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (jedi:setup)
+            (jedi:ac-setup)
+            (local-set-key "\C-cd" 'jedi:show-doc)
+            (local-set-key (kbd "M-SPC") 'jedi:complete)
+            (local-set-key (kbd "M-.") 'jedi:goto-definition)))
+
 
 (defun revert-all-buffers ()
   "Refreshes all open buffers from their respective files"
