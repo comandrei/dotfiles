@@ -22,9 +22,10 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(flymake flymake-cursor magit yasnippet less-css-mode markdown-mode web-mode zenburn-theme jedi smartparens))
+      '(flymake flymake-cursor magit yasnippet less-css-mode markdown-mode web-mode zenburn-theme jedi smartparens yaml-mode))
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.sls?\\'" . yaml-mode))
 
 (mapc 'install-if-needed to-install)
 (require 'yasnippet)
