@@ -1,3 +1,6 @@
+;;; emacs-config --- Custom stuff
+;;; Code:
+;;; Commentary:
 (setq auto-mode-alist (cons '("emacs" . lisp-mode) auto-mode-alist))
 (ido-mode 1)
 (show-paren-mode 1)
@@ -22,43 +25,20 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(flymake flymake-cursor magit yasnippet less-css-mode markdown-mode web-mode zenburn-theme jedi smartparens yaml-mode))
+      '(yasnippet less-css-mode markdown-mode zenburn-theme jedi smartparens yaml-mode flycheck))
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.sls?\\'" . yaml-mode))
 
 (mapc 'install-if-needed to-install)
 (require 'yasnippet)
-(require 'flymake)
-(require 'flymake-cursor)
 (require 'smartparens)
 (show-smartparens-global-mode +1)
 (load-theme 'zenburn t)
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/snippets/")
 
-(require 'magit)
-(global-set-key "\C-xg" 'magit-status)
-
-
-(when (load "flymake" t)
-  (defun flymake-pyflakes-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-               'flymake-create-temp-inplace))
-       (local-file (file-relative-name
-            temp-file
-            (file-name-directory buffer-file-name))))
-      (list "flake8"  (list local-file))))
-   (add-to-list 'flymake-allowed-file-name-masks
-             '("\\.py\\'" flymake-pyflakes-init)))
-(load-library "flymake-cursor")
-
-(add-hook 'python-mode-hook
-      (lambda ()
-        (unless (eq buffer-file-name nil) (flymake-mode))
-        (local-set-key [f2] 'flymake-goto-prev-error)
-        (local-set-key [f3] 'flymake-goto-next-error)
-        ))
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 (add-hook 'python-mode-hook
           (lambda ()
