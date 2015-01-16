@@ -25,18 +25,21 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(yasnippet less-css-mode markdown-mode zenburn-theme jedi smartparens yaml-mode flycheck))
+      '(exec-path-from-shell less-css-mode markdown-mode zenburn-theme jedi smartparens yaml-mode flycheck))
+
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.sls?\\'" . yaml-mode))
 
 (mapc 'install-if-needed to-install)
-(require 'yasnippet)
+;; (require 'yasnippet)
 (require 'smartparens)
 (show-smartparens-global-mode +1)
 (load-theme 'zenburn t)
-(yas/initialize)
-(yas/load-directory "~/.emacs.d/snippets/")
+;; (yas/initialize)
+;; (yas/load-directory "~/.emacs.d/snippets/")
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
