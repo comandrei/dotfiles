@@ -1,6 +1,8 @@
 ;;; emacs-config --- Custom stuff
 ;;; Code:
 ;;; Commentary:
+(setq package-enable-at-startup nil)
+(package-initialize)
 (setq auto-mode-alist (cons '("emacs" . lisp-mode) auto-mode-alist))
 (ido-mode 1)
 (show-paren-mode 1)
@@ -17,6 +19,7 @@
 (add-to-list 'package-archives
 	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
 
+(setq-default indent-tabs-mode nil)
 
 (defun install-if-needed (package)
   (unless (package-installed-p package)
@@ -25,7 +28,7 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(exec-path-from-shell less-css-mode markdown-mode zenburn-theme jedi smartparens yaml-mode flycheck))
+      '(exec-path-from-shell less-css-mode markdown-mode zenburn-theme jedi smartparens yaml-mode flycheck magit virtualenvwrapper))
 
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
@@ -41,8 +44,22 @@
 ;; (yas/initialize)
 ;; (yas/load-directory "~/.emacs.d/snippets/")
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(setq js-indent-level 4)
 
+(require 'virtualenvwrapper)
+(venv-initialize-interactive-shells) ;; if you want interactive shell support
+(venv-initialize-eshell) ;; if you want eshell support
+(setq venv-location "~/.virtualenvs/")
+
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 4)
+  (setq web-mode-code-indent-offset 4)
+  (setq web-mode-css-indent-offset 4)
+)
+(add-hook 'web-mode-hook  'my-web-mode-hook)
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
 (add-hook 'python-mode-hook
           (lambda ()
             (jedi:setup)
@@ -51,6 +68,23 @@
             (local-set-key (kbd "M-SPC") 'jedi:complete)
             (local-set-key (kbd "M-.") 'jedi:goto-definition)))
 
+(defun flycheck-python-set-executables ()
+  (let ((exec-path (python-shell-calculate-exec-path)))
+    (setq flycheck-python-pylint-executable (executable-find "pylint")
+          flycheck-python-pylintrc "~/.pylintrc"
+          flycheck-python-flake8-executable (executable-find "flake8")))
+  ;; Force Flycheck mode on
+  (flycheck-mode))
+
+(defun flycheck-python-setup ()
+  (add-hook 'hack-local-variables-hook #'flycheck-python-set-executables
+            nil 'local))
+
+(add-hook 'python-mode-hook (lambda ()
+                              (hack-local-variables)
+                              (when (boundp 'project-venv-name)
+                                (venv-workon project-venv-name))))
+(add-hook 'python-mode-hook #'flycheck-python-setup)
 
 (defun revert-all-buffers ()
   "Refreshes all open buffers from their respective files"
@@ -74,3 +108,15 @@ Don't mess with special buffers."
   (dolist (buffer (buffer-list))
     (unless (or (eql buffer (current-buffer)) (not (buffer-file-name buffer)))
       (kill-buffer buffer))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values (quote ((project-venv-name . "panda")))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
